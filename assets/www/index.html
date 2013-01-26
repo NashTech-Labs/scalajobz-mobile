@@ -1,0 +1,198 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head> 
+<title>Demo Application</title> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<link rel="stylesheet" href="css/jquery.mobile.min.css" />
+<link rel="stylesheet" href="css/index.css" />
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.mobile.min.js"></script>
+<script type="text/javascript" src="js/iscroll.js"></script>
+<script type="text/javascript" src="cordova-2.3.0.js"></script>
+
+ <script>
+ 
+
+$(document).ready(function() {
+   
+   	document.addEventListener("deviceready", onDeviceReady, true);
+   	//var iScroller = new iScroll('searchHeadingResult');
+
+ $(document).delegate('#listView','pageshow',function(e) {
+			
+	    var value=document.getElementById('searchTextBox').value;
+	    $("#searchHeadingDiv").css("display", "none");
+	    $("#loadingImageDiv").css("display", "block");
+	    	
+		$.getJSON("http://www.scalajobz.com/getJobsForACriteria/"+value,function(data) {
+				
+			$("#loadingImageDiv").css("display", "none");
+			$("#searchHeadingDiv").css("display", "block");
+			$('#searchHeadingDiv').append("<h1 id=searchString>"+value+"</h1>");
+				
+			if(data.length!=undefined){
+	
+				$('#searchHeadingDiv').append(data.length+"<span> results found</span>");
+	    		$('#searchHeadingResult').append("<ul></ul>");
+				var currentDate = new Date(); 
+				var time="";
+	    		
+				for(i in data){
+					
+					var postedDate=new Date(data[i].datePosted);
+					var dateDiff=(currentDate.getTime()-postedDate.getTime())/1000;
+					if(dateDiff<86400){
+						
+						var hrs =dateDiff/3600;
+						if(hrs <= 1){
+							if(hrs<0.60){
+								hrs = Math.floor(hrs*100);
+								time=hrs+" minutes ago"
+							}
+							else{
+								time = "1 hour ago";
+							}
+						}
+						else 
+							time = Math.floor(hrs) + " hours ago";
+						}
+						
+					else{
+						var day = Math.floor(dateDiff/86400);
+						if(day == 1)
+							time = day + " day ago";
+						else
+							time = day + " days ago";
+					}
+				
+					$('#searchHeadingResult ul').append("<a class='listItemLink'><li><input type='hidden' class='hiddenId' value='"+data[i].jobId+"'/><b>"+data[i].position+"</b><br/> "+data[i].company+" <br/>"+data[i].location+"<br/><span id='datePosted'>"+time+"</span></li></a><hr/>");
+				}
+			}
+			else{
+	  			$('#searchHeadingResult').append("<ul></ul>");
+				$('#searchHeadingResult ul').append("<li><b>"+data.message+"</b></li><hr/>");
+		  	}
+		  	
+		  	$('#searchHeadingResult ul').attr("class","listview");
+			$('#searchHeadingResult ul a li').attr('class','listItem');
+		});
+	});
+
+$("#searchHeadingResult ul a li").live("tap", function(event){
+    $(this).css("background-color", "#ccc");
+	$(this).css("color", "white");
+});
+	
+$('#jobDetailsContainer').live('pagebeforeshow',function(){
+	$('#listView').hide();
+  	$("#loadingImageDiv").css("display", "block");
+});
+
+$(document).on("click", "#searchHeadingResult ul a li",function(e){ 
+			 
+			  var id=$(this).find('input').attr('value');
+			  $("#loadingImageDiv").css("display", "block");
+			  $.mobile.changePage( "jobDetails.html");
+			  
+			  $.getJSON("http://www.scalajobz.com/getJobDetail/"+id,function(data) {
+					var applyContactString="" ;
+					var skills="";
+					$('#jobDetails > *').remove();
+					$("#loadingImageDiv").css("display", "none");
+					if(data.contactType=='url'){
+				
+						applyContactString="Click to apply:<br/><a href='"+data.contactAddress+"'><span class='jobValues'>"+data.tinyUrl+"</span></a><br/><hr/>";
+					}
+					
+					else{
+						applyContactString="Email address to apply:<br/><a href='#'><span class='jobValues'>"+data.contactAddress+"</span></a><br/><hr/>";
+					
+					}
+					
+					var skillsCollection=data.skillsRequired;
+					for(i in skillsCollection){
+						if(skills=="")
+							skills=skillsCollection[i];
+						else
+							skills=skills+","+skillsCollection[i];
+					}
+					$('#jobDetails').append("<span><h3><u>"+data.position+" - "+data.location+"</u></h3><br/>"+
+										"Company:<br/><span class='jobValues'>"+data.company+"</span><br/>"+
+										"JobType:<br/><span class='jobValues'>"+data.jobType+"</span><br/>"+
+										"Skills Required:<br/><span class='jobValues'>"+skills+"</span><br/>"+
+										"Date Posted:<br/><span class='jobValues'>"+data.datePosted+"</span><br/>"+
+										applyContactString+
+										data.description+"</span>");
+				});
+			});
+
+});
+
+var onDeviceReady = function() {
+      //  checkConnection();
+        window.addEventListener("batterylow", onBatteryLow, false);
+        
+        $('#searchbtn').click(function(){
+        	var networkState = navigator.network.connection.type;
+        	if($("#searchTextBox").attr('value') != ''){
+        		if(networkState == 'none'){
+					alert('No network connection');        			
+				}
+				else{
+					$.mobile.changePage( "listJobs.html");
+				}
+			}
+			else{
+				alert('Enter search string');
+			}
+		});
+    };
+    
+ function onBatteryLow(info) {
+        alert("Battery Level Low " + info.level + "%"); 
+ }
+ 
+</script>
+
+</head> 
+
+<body> 
+
+<div data-role="page">
+
+<div data-role="header">
+
+<div id='imageLogoDiv'> 
+		<div id='imgSize'>
+			<img src='images/scjobs.png' id='scalaJobzLogo'/><br/>
+			<label id='logoComment' style='text-align:right;margin-left:165px;'>One search, Scala jobz </label>
+		</div>
+	</div><!-- /imageLogo -->
+</div><!-- /header -->
+
+<div data-role="content" id='contentDiv'>   
+	
+	<div id='searchDiv'>
+		<label> <span id='wordFormatting'>What</span> job title, keywords, or company</label><br/><br/>
+		<input type='text' placeholder='Enter Search Keyword' id='searchTextBox'/>
+		
+		<div id='searchButtonDiv'>
+			<a href="#" data-theme="b" data-role="button" id='searchbtn'>Find Jobs</a>
+		</div>
+   </div><!--/searchDiv-->
+   <div>
+   		
+   	
+   </div>
+</div><!-- /content -->
+
+</div><!-- / Index page -->
+
+
+</body>
+</html>
+
