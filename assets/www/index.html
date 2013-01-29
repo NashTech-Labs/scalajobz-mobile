@@ -2,7 +2,7 @@
 <html lang="en">
 <head> 
 <title>Demo Application</title> 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width,  height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
@@ -15,88 +15,167 @@
 <script type="text/javascript" src="cordova-2.3.0.js"></script>
 
  <script>
+ var pageNumber=1, totalNoOfPage,value='',time='',id='';
+ $(document).bind("mobileinit", function() {
+  	$.support.touchOverflow = true;
+ 	$.mobile.touchOverflowEnabled = true;
+});
  
+ 
+var myScroll;
+function loaded() {
+	myScroll = new iScroll('searchHeadingResult',{ hScrollbar: false});
+	//jobDetailScroll=new iScroll('jobDetails');
+}
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+
+function calculateDatePostedTime(datePosted){
+		//var postedDate=datePosted.split('t')[0];
+		var currentDate = new Date(); 
+		var postedDate=new Date(Date.parse(datePosted.split('t')[0]));
+		var dateDiff=(currentDate.getTime()-postedDate.getTime())/1000;
+		if(dateDiff<86400){
+						
+			var hrs =dateDiff/3600;
+			if(hrs <= 1){
+				if(hrs<0.60){
+					hrs = Math.floor(hrs*100);
+					time=hrs+" minutes ago"
+				}
+				else{
+					time = "1 hour ago";
+				}
+			}
+			else 
+				time = Math.floor(hrs) + " hours ago";
+		}
+						
+		else{
+			var day = Math.floor(dateDiff/86400);
+			if(day == 1)
+				time = day + " day ago";
+			else
+				time = day + " days ago";
+		}
+		return time;
+}
+
+function addMoreJobsToList(){
+	pageNumber++;
+	if( totalNoOfPage >= pageNumber){
+	  $("#loadingImageDiv").css("display", "block");
+	  $.getJSON(" http://www.scalajobz.com/getJobsForACriteria/"+value+"?page="+pageNumber+"&jobsPerPage=25",function(data) {
+		
+		for(i in data.results){
+					var time= calculateDatePostedTime(data.results[i].datePosted);
+					$("#loadingImageDiv").css("display", "none");
+					$('ul#thelist').append("<a class='listItemLink'><li><input type='hidden' class='hiddenId' value='"+data.results[i].jobId+"'/><b>"+data.results[i].position+"</b><br/> "+data.results[i].company+" <br/>"+data.results[i].location+"<br/><span id='datePosted'>"+time+"</span></li></a><hr/>");
+				}
+				myScroll.refresh();
+			});
+		}
+}
+
+
+function showListJobsPage(){
+		pageNumber=1;
+		$.mobile.changePage( "#listView",null,true,true);
+		value=document.getElementById('searchTextBox').value;
+	    $("#searchHeadingDiv").css("display", "none");
+	    $("#loadingImageDiv").css("display", "block");
+	    $('#searchHeadingDiv > *').remove();
+	    $('ul#thelist > *').remove();
+		$.getJSON(" http://www.scalajobz.com/getJobsForACriteria/"+value+"?page="+pageNumber+"&jobsPerPage=25",function(data) {
+			
+			$("#loadingImageDiv").css("display", "none");
+			$("#searchHeadingDiv").css("display", "block");
+			$('#searchHeadingDiv').append("<h1 id=searchString>"+value+"</h1>");
+			totalNoOfPage= Math.ceil(data.responseDescription.totalResults / 25);
+			if(data.responseDescription.totalResults !=undefined){
+				$('#searchHeadingDiv').append("<span>"+data.responseDescription.totalResults+" results found</span>");
+	    		
+				for(i in data.results){
+					var time= calculateDatePostedTime(data.results[i].datePosted);
+					$('ul#thelist').append("<a class='listItemLink'><li><input type='hidden' class='hiddenId' value='"+data.results[i].jobId+"'/><b>"+data.results[i].position+"</b><br/> "+data.results[i].company+" <br/>"+data.results[i].location+"<br/><span id='datePosted'>"+time+"</span></li></a><hr/>");
+				}
+			}
+			else{
+				$('ul#thelist').append("<li><b>"+data.message+"</b></li><hr/>");
+		  	}
+		  	$('#searchHeadingResult ul').attr("class","listview");
+			$('#searchHeadingResult ul a li').attr('class','listItem');
+			myScroll.scrollTo(0,0,100);
+			myScroll.refresh();
+			
+		});
+}
 
 $(document).ready(function() {
    
    	document.addEventListener("deviceready", onDeviceReady, true);
-   	//var iScroller = new iScroll('searchHeadingResult');
-
- $(document).delegate('#listView','pageshow',function(e) {
-			
-	    var value=document.getElementById('searchTextBox').value;
-	    $("#searchHeadingDiv").css("display", "none");
-	    $("#loadingImageDiv").css("display", "block");
-	    	
-		$.getJSON("http://www.scalajobz.com/getJobsForACriteria/"+value,function(data) {
-				
-			$("#loadingImageDiv").css("display", "none");
-			$("#searchHeadingDiv").css("display", "block");
-			$('#searchHeadingDiv').append("<h1 id=searchString>"+value+"</h1>");
-				
-			if(data.length!=undefined){
+   //	var ele=document.getElementById('searchHeadingResult');
+   //	ele.addEventListener('touchend', positionHandlerEnd, false );
 	
-				$('#searchHeadingDiv').append(data.length+"<span> results found</span>");
-	    		$('#searchHeadingResult').append("<ul></ul>");
-				var currentDate = new Date(); 
-				var time="";
-	    		
-				for(i in data){
-					
-					var postedDate=new Date(data[i].datePosted);
-					var dateDiff=(currentDate.getTime()-postedDate.getTime())/1000;
-					if(dateDiff<86400){
-						
-						var hrs =dateDiff/3600;
-						if(hrs <= 1){
-							if(hrs<0.60){
-								hrs = Math.floor(hrs*100);
-								time=hrs+" minutes ago"
-							}
-							else{
-								time = "1 hour ago";
-							}
-						}
-						else 
-							time = Math.floor(hrs) + " hours ago";
-						}
-						
-					else{
-						var day = Math.floor(dateDiff/86400);
-						if(day == 1)
-							time = day + " day ago";
-						else
-							time = day + " days ago";
-					}
-				
-					$('#searchHeadingResult ul').append("<a class='listItemLink'><li><input type='hidden' class='hiddenId' value='"+data[i].jobId+"'/><b>"+data[i].position+"</b><br/> "+data[i].company+" <br/>"+data[i].location+"<br/><span id='datePosted'>"+time+"</span></li></a><hr/>");
-				}
-			}
-			else{
-	  			$('#searchHeadingResult').append("<ul></ul>");
-				$('#searchHeadingResult ul').append("<li><b>"+data.message+"</b></li><hr/>");
-		  	}
-		  	
-		  	$('#searchHeadingResult ul').attr("class","listview");
-			$('#searchHeadingResult ul a li').attr('class','listItem');
-		});
-	});
+	 $(document).delegate('#listView','pageinit',function(e) {
+			
+	    	});
+	
+	$("#btnShowDialog").click(function (e)
+            {
+                ShowDialog();
+                e.preventDefault();
+            });
 
-$("#searchHeadingResult ul a li").live("tap", function(event){
-    $(this).css("background-color", "#ccc");
-	$(this).css("color", "white");
+    $("#btnClose").click(function (e)
+            {
+                HideDialog();
+                e.preventDefault();
+            });
+
+     $("#btnSubmit").click(function (e)
+            {
+                var email = $("#emailTextBox").val();
+                var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
+                if (pattern.test(email)){
+                	HideDialog();
+                	$.getJSON("http://www.scalajobz.com/sendJobDetailMail?emailId="+email+"&jobId="+id,function(data) {
+                		alert(data.message);
+                	});
+                	e.preventDefault();
+                }
+                else{
+                	alert('Enter correct email address');
+                }
+       });
+
+$('#jobDetailsContainer').live("tap", function(event){
+     $('#popupEmailButton').show("fast");
+     setTimeout(function() {
+         $('#popupEmailButton').hide();
+    	}, 4000);
+        e.preventDefault();
+});
+
+$("#searchHeadingResult ul a li").live('tap', function(){
+		 $(this).css("color", "#336699");
 });
 	
 $('#jobDetailsContainer').live('pagebeforeshow',function(){
-	$('#listView').hide();
-  	$("#loadingImageDiv").css("display", "block");
+	//$('#listView').hide();
+  	//$("#loadingImageDiv").css("display", "block");
 });
 
-$(document).on("click", "#searchHeadingResult ul a li",function(e){ 
-			 
-			  var id=$(this).find('input').attr('value');
+$(document).on("tap", "#searchHeadingResult ul a li",function(e){ 
+
+			 $(this).css("color", "#336699");
+			  id=$(this).find('input').attr('value');
+			 // $("#loadingImageDiv").css("display", "block");
+			  $.mobile.changePage( "#jobDetailsContainer");
 			  $("#loadingImageDiv").css("display", "block");
-			  $.mobile.changePage( "jobDetails.html");
+			 	HideDialog();
+			  $('#popupEmailButton').show("fast");
 			  
 			  $.getJSON("http://www.scalajobz.com/getJobDetail/"+id,function(data) {
 					var applyContactString="" ;
@@ -127,23 +206,27 @@ $(document).on("click", "#searchHeadingResult ul a li",function(e){
 										"Date Posted:<br/><span class='jobValues'>"+data.datePosted+"</span><br/>"+
 										applyContactString+
 										data.description+"</span>");
+				//	jobDetailScroll.refresh();
 				});
+				setTimeout(function() {
+        			 $('#popupEmailButton').hide();
+    		  }, 4000);
 			});
 
 });
 
 var onDeviceReady = function() {
-      //  checkConnection();
         window.addEventListener("batterylow", onBatteryLow, false);
         
-        $('#searchbtn').click(function(){
+        $('#searchbtn').live("tap", function(event){
         	var networkState = navigator.network.connection.type;
         	if($("#searchTextBox").attr('value') != ''){
         		if(networkState == 'none'){
 					alert('No network connection');        			
 				}
 				else{
-					$.mobile.changePage( "listJobs.html");
+					//$.mobile.changePage( "#listView",null,true,true);
+					showListJobsPage();
 				}
 			}
 			else{
@@ -156,41 +239,120 @@ var onDeviceReady = function() {
         alert("Battery Level Low " + info.level + "%"); 
  }
  
+ function ShowDialog()
+        {
+            $("#dialog").fadeIn(100);
+
+        }
+
+ function HideDialog()
+        {
+            $("#dialog").fadeOut(100);
+        } 
+ 
 </script>
 
 </head> 
 
 <body> 
 
-<div data-role="page">
+<div data-role="page" id='indexPage'>
 
-<div data-role="header">
+<div data-role="header" id='indexHeader'>
 
 <div id='imageLogoDiv'> 
 		<div id='imgSize'>
 			<img src='images/scjobs.png' id='scalaJobzLogo'/><br/>
-			<label id='logoComment' style='text-align:right;margin-left:165px;'>One search, Scala jobz </label>
+			<label id='logoComment' style='text-align:right;margin-left:160px;'>One search, Scala jobz </label>
 		</div>
 	</div><!-- /imageLogo -->
 </div><!-- /header -->
 
-<div data-role="content" id='contentDiv'>   
+	<div data-role="content" id='contentDiv'>   
 	
-	<div id='searchDiv'>
-		<label> <span id='wordFormatting'>What</span> job title, keywords, or company</label><br/><br/>
-		<input type='text' placeholder='Enter Search Keyword' id='searchTextBox'/>
-		
-		<div id='searchButtonDiv'>
-			<a href="#" data-theme="b" data-role="button" id='searchbtn'>Find Jobs</a>
-		</div>
-   </div><!--/searchDiv-->
-   <div>
-   		
-   	
-   </div>
-</div><!-- /content -->
+		<div id='searchDiv'>
+			<label> <span id='wordFormatting'>What</span> job title, keywords, or company</label><br/><br/>
+			<input type='text' placeholder='Enter Search Keyword' id='searchTextBox'/>
+			
+			<div id='searchButtonDiv'>
+				<a href="#" data-theme="b" data-role="button" id='searchbtn'>Find Jobs</a>
+			</div>
+	   </div><!--/searchDiv-->
+	</div><!-- /content -->
+	
 
 </div><!-- / Index page -->
+
+
+
+<div data-role="page" id="listView">
+
+	<div data-role="header" id="listJobHeader" data-theme="b" data-position="fixed">
+		<a href="#indexPage" data-theme="b" data-role="button" id="homeBtn">Home</a>
+		<h1></h1>
+		<a href="#indexPage" data-theme="b" data-role="button">Back</a>
+	</div>
+	
+	<div data-role="content" id="listContent">   
+	
+		<div id="searchHeadingDiv">
+	    	
+	    </div>
+	    
+		<div id="searchHeadingResult">
+			<div id="scroller">
+				<ul id="thelist">
+					
+				</ul>
+			</div>
+		</div>
+
+		<div id='loadingImageDiv'>
+			<img src="images/waiting.gif" align="center" width="40px"/>
+		</div>
+		
+	</div><!-- /content -->
+
+
+</div><!-- /listJobs page -->
+
+
+<div data-role="page" id="jobDetailsContainer">
+
+	<div data-role="header" id="jobDetailsHeader" data-theme="b" data-position="fixed">
+		<a href="#indexPage" class="ui-btn-left" id='homeButton'>Home</a>
+		<a href="javascript:history.go(-1)" class="ui-btn-right" id="backBtn">Back</a>
+	</div>
+
+	<div data-role="content" id="jobDetailsContent">   
+
+		<div id="jobDetails">    
+            
+        </div>
+
+		<div id='loadingImageDiv'>
+			<img src="images/waiting.gif" align="center" width="40px"/>
+		</div>
+		
+	</div><!-- /content -->
+	<div id="popupEmailButton">
+		<label data-theme="b" data-role='label' id="btnShowDialog">Email this job</label>
+	</div>
+	
+    <div id="dialog" class="dialog_box" align='center'>
+    	<br/>
+    	<label class="dialog_box_title">Enter email address</label>
+    	
+    	<br/><br/>
+    	<input type='text' placeholder='Enter email' id='emailTextBox'/>
+    	<br/>
+    	<a href="#" data-theme="b" data-inline='true' class="ui-btn-left" data-role='button' id="btnSubmit">Submit</a>
+        <a href="#" data-theme="b" data-inline='true' class="ui-btn-right" data-role='button' id="btnClose">Cancel</a>
+               
+    </div>
+
+</div><!-- /jobDetails page -->
+	
 
 
 </body>

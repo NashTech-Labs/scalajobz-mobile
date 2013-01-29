@@ -793,7 +793,8 @@ iScroll.prototype = {
 			maxDistLower = maxDistLower + outsideDist;
 			speed = speed * maxDistLower / newDist;
 			newDist = maxDistLower;
-			addMoreJobsToList();
+			alert(flag)
+			flag='true';
 		}
 
 		newDist = newDist * (dist < 0 ? -1 : 1);
