@@ -14,7 +14,7 @@ public class ScalaJobsActivity extends DroidGap {
     @Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.loadUrl("file:///android_asset/www/scr.html");
+        super.loadUrl("file:///android_asset/www/index.html");
         
         // set scrollbar style
        

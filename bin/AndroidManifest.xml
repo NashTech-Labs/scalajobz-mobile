@@ -17,15 +17,17 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.example.scalaJobs.ScalaJobsActivity"
-            android:label="@string/app_name" android:configChanges="orientation|keyboardHidden" >
+            android:label="@string/app_name" 
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name="org.apache.cordova.DroidGap" 
-        	android:label="@string/app_name" android:configChanges="orientation|keyboardHidden"> 
+        	android:label="@string/app_name"
+        	android:windowSoftInputMode="stateVisible|adjustResize"
+        	android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale" > 
         	<intent-filter></intent-filter> 
         </activity>
     </application>
