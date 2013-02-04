@@ -1,12 +1,14 @@
 var pageNumber=1, totalNoOfPage,value='',time='',id='';
-var availableTags= [];
-var availableEmails= [];
+ $(document).bind("mobileinit", function() {
+  	$.support.touchOverflow = true;
+ 	$.mobile.touchOverflowEnabled = true;
+});
  
  
 var myScroll,jobDetailScroll;
 function loaded() {
 	myScroll = new iScroll('searchHeadingResult',{ hScroll: false, hideScrollbar:false, desktopCompatibility:true});
-	jobDetailScroll=new iScroll('jobDetails',{ hScroll: false, hideScrollbar:false, bounce : false, momentum:false, 		desktopCompatibility:true});
+	jobDetailScroll=new iScroll('jobDetails',{ hScroll: false, hideScrollbar:false, bounce : false, momentum:false, desktopCompatibility:true});
 }
 
 document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
@@ -91,33 +93,10 @@ function showListJobsPage(){
 			
 		});
 }
-function changeHomeImage(){
-
-	//$('#homeImage').attr("src","images/home_enable.png");
-	$('#homeImage').css("background-color", "#426685")
-	setTimeout(function() {
-     		 $.mobile.changePage( "#indexPage");
-	}, 500);
-	
-	//$('#homeImage').attr("background-color", "none")
-	}
-
 function linkClick(url){
 		 window.plugins.childBrowser.showWebPage('http://www.google.com', { showLocationBar: true });
 //		$.mobile.changePage("#indexPage");
 
-}
-
-function setAutoCompleteValueToTextBox(searchValue){
-		var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
-                if (pattern.test(searchValue)){
-			$('#emailTextBox').val(searchValue)
-			$('ul#emailSuggestions').hide();
-		}
-		else{
-			$('#searchTextBox').val(searchValue)
-			$('ul#suggestions').hide();
-		}
 }
 
 $(document).ready(function() {
@@ -127,20 +106,10 @@ $(document).ready(function() {
 		  $.mobile.loader.prototype.options.textVisible = false;
 		  $.mobile.loader.prototype.options.theme = "a";
 		  $.mobile.loader.prototype.options.html = "";
-		  $.support.touchOverflow = true;
-	    	  $.mobile.touchOverflowEnabled = true;
 	});
-	
-	document.addEventListener("deviceready", onDeviceReady, true);
 
-	$('#searchTextBox').on('input',function(e){
-		$('ul#suggestions').show();
-	})
-	
-	$('#emailTextBox').on('input',function(e){
-		$('ul#emailSuggestions').show();
-	})
-
+   
+   	document.addEventListener("deviceready", onDeviceReady, true);
    //	var ele=document.getElementById('searchHeadingResult');
    //	ele.addEventListener('touchend', positionHandlerEnd, false );
    
@@ -168,16 +137,14 @@ $(document).ready(function() {
 			jobDetailScroll.refresh();
 	    	});
 	
-	$("#indexPage").bind("pageshow", function(e) {
-		$("#searchTextBox").val('');
-		$("#searchTextBox").autocomplete({
-				target: $('#suggestions'),
-				source: availableTags,
-				minLength: 1,
-				matchFromStart: false,
-			});
+	
+	$('#emailTextBox').click(function(){
+		//$(this).val("");
 	});
-
+	
+	$('#searchTextBox').click(function(){
+		//$(this).val("");
+	});
 	
 	$("#btnShowDialog").click(function (e)
             {
@@ -196,18 +163,15 @@ $(document).ready(function() {
                 var email = $("#emailTextBox").val();
                 var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
                 if (pattern.test(email)){
-			if( jQuery.inArray(email, availableEmails) < 0 )
-				availableEmails.push(email);
-	               	HideDialog();
+                	HideDialog();
                 	$.getJSON("http://www.scalajobz.com/sendJobDetailMail?emailId="+email+"&jobId="+id,function(data) {
                 		alert(data.message);
                 	});
-                	
+                	e.preventDefault();
                 }
                 else{
                 	alert('Enter correct email address');
                 }
-		e.preventDefault();
        });
 
 $('#jobDetailsContainer').live("tap", function(event){
@@ -285,9 +249,6 @@ var onDeviceReady = function() {
 					alert('No network connection');        			
 				}
 				else{
-					var searchValue=$("#searchTextBox").attr('value');
-					if( jQuery.inArray(searchValue, availableTags) < 0 )
-						availableTags.push(searchValue);
 					showListJobsPage();
 				}
 			}
@@ -305,14 +266,9 @@ var onDeviceReady = function() {
         {
             
 	$("#jobDetailsContent").fadeTo("slow", 0.33);
-	$("#emailTextBox").val('');
-	$("#emailTextBox").autocomplete({
-			target: $('#emailSuggestions'),
-			source: availableEmails,
-			minLength: 1,
-			matchFromStart: false,
-		});
 	$("#dialog").fadeIn(100);
+	    
+
         }
 
  function HideDialog()

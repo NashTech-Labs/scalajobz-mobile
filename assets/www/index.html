@@ -7,6 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
 <link rel="stylesheet" href="css/jquery.mobile.min.css" />
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
 <link rel="stylesheet" href="css/index.css" />
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -14,7 +15,8 @@
 <script type="text/javascript" src="js/iscroll.js"></script>
 <script type="text/javascript" src="cordova-2.3.0.js"></script>
 <script type="text/javascript" src="js/index.js"></script>
- <script src="js/childbrowser.js"></script>
+<script src="js/jqm.autoComplete-1.5.0-min.js"></script>
+<script src="js/childbrowser.js"></script>
 
 
 </head>      
@@ -37,6 +39,8 @@
 		<div id='searchDiv'>
 			<label> <span id='wordFormatting'>What</span> job title, keywords, or company</label><br/><br/>
 			<input type='text' placeholder='Enter Search Keyword' id='searchTextBox'/>
+				<ul id="suggestions" data-role="listview" ></ul>
+			
 			<div id='searchButtonDiv'>
 					<a href="#" data-theme='b' data-role="button" id='searchbtn'>Find Jobs</a>
 			</div>
@@ -44,7 +48,6 @@
 	</div><!-- /content -->
 	
 </div><!-- / Index page -->
-
 
 
 <div data-role="page" id="listView">
@@ -61,12 +64,10 @@
 	<div data-role="content" id="listContent">   
 		
 		<div id='listTopHeader'>
-			<div id='homeDiv' style='float:left;margin:2% 0;width:50%;background-color:#fafafa;'>
-				<a href="#indexPage" class='.ui-btn-left' data-role="button" id="homeBtn">Home</a>
+			<div id='homeDiv' align='center'>
+				<a href="#" onclick='changeHomeImage();'><img src='images/home.png' id='homeImage'/></a>
 			</div>
-			<div id='backDiv' style='float:right;margin:2% 0;width:50%;background-color:#fafafa;'>
-				<a href="#indexPage" class='.ui-btn-right' data-role="button">Back</a>
-			</div>
+			
 		</div>
 	
 		<div id="searchHeadingResult">
@@ -92,12 +93,10 @@
 	<div data-role="content" id="jobDetailsContent">   
 		
 		<div id='listTopHeader'>
-			<div id='homeDiv'>
-				<a href="#indexPage" class='.ui-btn-left' data-role="button" id="homeBtn">Home</a>
+			<div id='homeDiv' align='center' style='margin-top:5%;'>
+				<a href="#" onclick='changeHomeImage();'><img src='images/home.png' id='homeImage'/></a>
 			</div>
-			<div id='backDiv'>
-				<a href="javascript:history.go(-1);" class='.ui-btn-right' data-role="button">Back</a>
-			</div>
+			
 		</div>
 	
 		<div id="jobDetails">
@@ -117,15 +116,15 @@
     <div id="dialog" class="dialog_box" align='center'>
     	<br/>
     	<label class="dialog_box_title">Enter email address</label>
-    	
     	<br/><br/>
     	<input type='text' placeholder='Enter email' id='emailTextBox'/>
+    		<ul id="emailSuggestions" data-role="listview" ></ul>
     	<br/>
     	
     	<a href="#" data-theme='b' data-inline='true' class="ui-btn-left" data-role='button' id="btnSubmit">Submit</a>
         <a href="#"  data-theme='b' data-inline='true' class="ui-btn-right" data-role='button' id="btnClose">Cancel</a>
     </div>
-
+	
 </div><!-- /jobDetails page -->
 	
 </body>
