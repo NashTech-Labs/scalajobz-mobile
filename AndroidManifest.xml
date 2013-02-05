@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.scalaJobs"
+    package="com.knoldus.scalaJobz"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.scalaJobs.ScalaJobsActivity"
+            android:name="com.knoldus.scalaJobz.ScalaJobzActivity"
             android:label="@string/app_name" 
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale" >
             <intent-filter>

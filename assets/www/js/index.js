@@ -71,7 +71,7 @@ $(document).ready(function() {
 		$('ul#emailSuggestions').show();
 	})
 	
-	$("#btnShowDialog").click(function (e)
+	$(".btnShowDialog").click(function (e)
             {
                 ShowDialog();
                 e.preventDefault();

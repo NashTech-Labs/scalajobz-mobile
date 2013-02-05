@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.example.scalaJobs;
+package com.knoldus.scalaJobz;
 
 public final class R {
     public static final class attr {

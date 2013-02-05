@@ -1,15 +1,15 @@
-package com.example.scalaJobs;
+package com.knoldus.scalaJobz;
 
 import org.apache.cordova.DroidGap;
 import org.apache.cordova.*;
-import com.example.scalaJobs.R;
+import com.knoldus.scalaJobz.R;
 
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
-public class ScalaJobsActivity extends DroidGap {
+public class ScalaJobzActivity extends DroidGap {
 
     @Override
 	public void onCreate(Bundle savedInstanceState) {
