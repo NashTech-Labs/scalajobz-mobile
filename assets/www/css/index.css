@@ -26,10 +26,9 @@ body {
 .ui-header{
 	    background: #426685;
 	    background-image: -moz-linear-gradient(center top , #497093, #385671);
-
 }
+
 div#scalaJobHeader{
-	
 	height:auto;
 }
 
@@ -37,7 +36,7 @@ div#listTopHeader{
 	height:auto;
 	
 }
-div#listTopHeader div#homeDiv,div#listTopHeader div#backDiv{
+div#listTopHeader div#homeDiv{
 	float:right;
 	z-index:130;
 	position:relative;
@@ -72,9 +71,10 @@ input#searchTextBox{
 	height:40px;
 	margin-left:15%;
 }
-ul#suggestions,{
+ul#suggestions{
 	width:70%;
-	margin:0 15%;
+	margin:0;
+	margin-left:15%;
 }
 ul#suggestions li{
 	line-height:5px;
@@ -84,16 +84,14 @@ ul#suggestions li{
 ul#emailSuggestions{
 	width: 76.2%;
 	margin:0 10%;
-	
 }
 ul#emailSuggestions li{
-	
 	border-radius:5px;
 }
 ul#emailSuggestions li a{
 	font-weight:normal;
-	font-size:11px;
-	line-height:3px;	
+	font-size:12px;
+	line-height:4px;	
 }
 .ui-icon{
 	background:transparent;
@@ -106,8 +104,8 @@ span#wordFormatting{
 div#searchDiv{
 	margin-top:50px;
 	text-align: center;
-	
 }
+
 div#searchButtonDiv{
 	margin-top:50px;
 	width:50%;
@@ -289,7 +287,7 @@ span#headingTitle{
 	font-size:16px;
 }
 
-img#homeImage{
+img.homeImage{
 	z-index:130;
 	width:30px;height:30px;
 	position:relative;
