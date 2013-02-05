@@ -47,7 +47,8 @@ $(document).ready(function() {
 			
 	    	});
 	$(document).delegate('#jobDetailsContainer','pageshow',function(e) {
-			$('.homeImage').css("background-color", "#fafafa")
+			$('.homeImage').css("background-color", "#fafafa");
+			
 			jobDetailScroll.refresh();
 			
 	    	});
@@ -124,7 +125,7 @@ $(document).ready(function() {
 					$('#jobDescription > *').remove();
 					$("#loadingImageDiv").css("display", "none");
 					if(data.contactType=='url'){
-						applyContactString="Click to apply:<br/><a href='"+data.contactAddress+"' id='jobDetailLink'  class='ui-link' rel='external' target='_blank' data-ajax='false'><span class='jobValues'>"+data.tinyUrl+"</span></a><br/><hr/>";
+						applyContactString="Click to apply:<br/><a id='jobDetailLink'  class='ui-link' rel='external' target='_blank' data-ajax='false'><span class='jobValues' id='"+data.contactAddress+"' onclick='applyToJobLink(this.id);'>"+data.tinyUrl+"</span></a><br/><hr/>";
 
 					}
 					
@@ -224,7 +225,7 @@ function addMoreJobsToList(){
 		for(i in data.results){
 					var time= calculateDatePostedTime(data.results[i].datePosted);
 					$("#loadingImageDiv").css("display", "none");
-					$('ul#thelist').append("<a class='listItemLink'><li><input type='hidden' class='hiddenId' value='"+data.results[i].jobId+"'/><b>"+data.results[i].position+"</b><br/> "+data.results[i].company+" <br/>"+data.results[i].location+"<br/><span id='datePosted'>"+time+"</span></li></a><hr/>");
+					$('ul#thelist').append("<a class='listItemLink'><li><input type='hidden' class='hiddenId' value='"+data.results[i].jobId+"'/><b>"+data.results[i].position+"</b><br/>"+data.results[i].company+" <br/>"+data.results[i].location+"<br/><span id='datePosted'>"+time+"</span></li></a><hr/>");
 				}
 				myScroll.refresh();
 			});
@@ -311,4 +312,6 @@ function setAutoCompleteValueToTextBox(searchValue){
             $("#dialog").fadeOut(100);
 	    $("#jobDetailsContent").fadeTo("slow", 1);
         } 
- 
+ function applyToJobLink(urlAddress){
+	window.open(urlAddress, "_blank");
+}
