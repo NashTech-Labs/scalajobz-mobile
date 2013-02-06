@@ -38,11 +38,16 @@
 		<div id='searchDiv'>
 			<label> <span id='wordFormatting'>What</span> job title, keywords, or company</label><br/><br/>
 			<input type='text' placeholder='Enter Search Keyword' id='searchTextBox'/>
-				<ul id="suggestions" data-role="listview" ></ul>
+				
 			
 			<div id='searchButtonDiv'>
-					<a href="#" data-theme='b' data-role="button" id='searchbtn'>Find Jobs</a>
+					<a href="#" data-theme='b' data-role="button" id='searchbtn'>Find Jobs</a></br>
 			</div>
+			
+			<div id='recentSearchDiv' style='display:none'>
+				<ul id="suggestions"></ul>
+			</div>
+			
 		</div><!--/searchDiv-->
 	</div><!-- /content -->
 	
@@ -62,13 +67,6 @@
 	
 	<div data-role="content" id="listContent">   
 		
-		<div id='listTopHeader'>
-			<div id='homeDiv' align='center'>
-				<a href="#" onclick='changeHomeImage();'><img src='images/home.png' class='homeImage'/></a>
-			</div>
-			
-		</div>
-	
 		<div id="searchHeadingResult">
 			<div id="scroller">
 				<ul id="thelist">
@@ -91,26 +89,16 @@
 	
 	<div data-role="content" id="jobDetailsContent">   
 		
-		<div id='listTopHeader'>
-			<div id='homeDiv' align='center'>
-				<a href="#" onclick='changeHomeImage();'><img src='images/home.png'  style='margin-top:5%;' class='homeImage'/></a>
-			</div>
-			
-		</div>
-	
-		<div id="jobDetails">
+		<div id='jobDetails'>
 			<div id='scroller'>    
-            	<ul id="jobDescription">
+            	<ul id="jobDescription" >
 					
 				</ul>
 			</div>
         </div>
-
+       
+        	
 </div><!-- /content -->
-
-	<div id="popupEmailButton"  class="btnShowDialog">
-		<label data-role='label' >Email this job</label>
-	</div>
 	
     <div id="dialog" class="dialog_box" align='center'>
     	<br/>
