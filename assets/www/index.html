@@ -16,39 +16,41 @@
 <script type="text/javascript" src="cordova-2.3.0.js"></script>
 <script type="text/javascript" src="js/index.js"></script>
 <script src="js/jqm.autoComplete-1.5.0-min.js"></script>
-
-
 </head>      
 
 <body> 
 
-<div data-role="page" id='indexPage'>
+<div data-role="page" id="indexPage">
 
 	<div data-role="header" id='indexHeader'>
 		<div id='imageLogoDiv' data-position='fixed'> 
 			<div id='imgSize'>
-				<img src='images/scjobs.png' id='scalaJobzLogo'/><br/>
-				<label id='logoComment' style='text-align:right;margin-left:160px;'>One search, Scala jobz </label>
+				<img src='images/scjobs.png' id='scalaJobzLogo' height='35px'/><br/>
+				<label id='logoComment'>One search, Scala jobz </label>
 			</div>
 		</div><!-- /imageLogo -->
 	</div><!-- /header -->
 	
-	<div data-role="content" id='contentDiv'>   
+	<div data-role="content" id='searchDiv'>   
 	
-		<div id='searchDiv'>
-			<label> <span id='wordFormatting'>What</span> job title, keywords, or company</label><br/><br/>
-			<input type='text' placeholder='Enter Search Keyword' id='searchTextBox'/>
-				
-			
-			<div id='searchButtonDiv'>
-					<a href="#" data-theme='b' data-role="button" id='searchbtn'>Find Jobs</a></br>
+			<div id='scroller'>    
+            	<ul id='searchList'>
+					<li>
+					<label><span id='wordFormatting'>What</span> job title, keywords, or company</label><br/><br/>
+					<input type='text' placeholder='Enter Search Keyword' id='searchTextBox' />
+					<div id='searchButtonDiv'>
+						<a href="#" data-theme='b' data-role="button" id='searchbtn'>Find Jobs</a></br>
+					</div>
+					<div id='recentSearchDiv'>
+						<ul id="suggestions"></ul>
+					</div>
+					</li>
+				</ul>
 			</div>
-			
-			<div id='recentSearchDiv' style='display:none'>
-				<ul id="suggestions"></ul>
-			</div>
-			
-		</div><!--/searchDiv-->
+	
+	
+	
+		
 	</div><!-- /content -->
 	
 </div><!-- / Index page -->
@@ -65,15 +67,14 @@
 		</div>
 	</div>
 	
-	<div data-role="content" id="listContent">   
+	<div data-role="content" id="searchHeadingResult">   
 		
-		<div id="searchHeadingResult">
 			<div id="scroller">
 				<ul id="thelist">
 					
 				</ul>
 			</div>
-		</div>
+		
 
 	</div><!-- /content -->
 </div><!-- /listJobs page -->
@@ -110,6 +111,7 @@
     	
     	<a href="#" data-theme='b' data-inline='true' class="ui-btn-left" data-role='button' id="btnSubmit">Submit</a>
         <a href="#"  data-theme='b' data-inline='true' class="ui-btn-right" data-role='button' id="btnClose">Cancel</a>
+        <br/>
     </div>
 	
 </div><!-- /jobDetails page -->

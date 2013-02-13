@@ -1,4 +1,3 @@
-
 [data-role=page]{height: 100% !important; position:relative !important;font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;}
 [data-role="header"] {position: absolute;top: 0;
             left: 0;
@@ -6,7 +5,7 @@
         }
 [data-role="content"] {
             position: absolute;
-            top: 10%;
+            top:0;
             bottom: 0;
             left: 0;
             right: 0;background-color:#ffffff;
@@ -28,35 +27,29 @@ body {
 	    background-image: -moz-linear-gradient(center top , #497093, #385671);
 }
 
-div#scalaJobHeader{
-	height:auto;
+.ui-btn, .ui-btn-inner, .ui-btn-corner-all {
+    border-radius: 0 0 0 0;
 }
 
-div#listTopHeader{
+div#scalaJobHeader{
 	height:auto;
-	
 }
 
 div img#scalaJobzLogo{
 	margin-top:1%;
 }
-div#contentDiv{
-	text-align:center;
-	top:17%;
-	
-}
+
 div#imageLogoDiv{
 	background-color: #426685;
 	background-image: -moz-linear-gradient(center top , #497093, #385671);
 	width:100%;
 	text-align:center;
-	height:20%;
 }
 label#logoComment{
 	color:#ffffff;
 	font-size:12px;
 	background-color: #426685;
-    
+	text-align:right;margin-left:50px;
 }
 
 input#searchTextBox{
@@ -69,11 +62,10 @@ ul#suggestions{
 	padding-left: 0;
 	text-align:left;
 	list-style:none;
+	margin-top:2%;
 }
 ul#suggestions li{
-	
-	font-weight:normal;
-	border-radius:5px;
+	font-weight:8px;
 }
 ul#emailSuggestions{
 	width: 76.2%;
@@ -94,27 +86,44 @@ ul#emailSuggestions li a{
 span#wordFormatting{
 	font-size:18px;
 	color: 	#FFA500;
+	
 }
 div#searchDiv{
-	margin-top:50px;
 	text-align: center;
+	position:absolute; z-index:1;
+	top:0; bottom:0; left:0;
+	width:100%;
+	overflow:auto;
+	
+}
+
+#searchDiv ul{
+	width:100%;
+	margin:0;padding:0;
 }
 
 div#searchButtonDiv{
-	margin-top:50px;
+	margin-top:5%;
 	width:50%;
 	margin-left:25%;
 }
 
-.ui-btn-text{
-	font-size:20px;
+div#searchButtonDiv .ui-btn-text{
+	font-size:18px;
 }
 
 
 div#searchString{
 	background:transparent;
+	font-size:26px;
+	font-weight:bold;
 }
-
+span#searchString{
+	font-size:22px;
+	font-weight:bold;
+	text-overflow:ellipsis;
+	width:50px;
+}
 div#loadingImageDiv{
 	display:none;
 	float:right;
@@ -132,13 +141,9 @@ span.jobValues{
 
 div#jobDetails{
  	position:absolute; z-index:1;
-	top:20px; bottom:0; left:0;
+	top:0; bottom:0; left:0;
 	width:100%;
 	overflow:auto;
-}
-
-div#jobDetailsHeader{
-	height:12%;
 }
 
 span#datePosted{
@@ -167,7 +172,7 @@ img#arrowImage{
 
 #searchHeadingResult {
 	position:absolute; z-index:1;
-	top:0; bottom:0; left:0;
+	bottom:0; left:0;
 	width:100%;
 	overflow:auto;
 }
@@ -187,7 +192,12 @@ img#arrowImage{
 	width:100%;
 	text-align:left;
 }
-
+#homeSearch{
+	margin:0;
+}
+#homeSearch li{
+	padding:0;
+}
 #scroller li {
 	padding:10px 0 10px 30px;
 	font-size:14px;
@@ -195,6 +205,10 @@ img#arrowImage{
 #scroller > * {
             -webkit-transform: translateZ(0px);
         }
+
+#searchDiv #scroller li{
+	padding:0;
+}
 
 #searchHeadingDiv{
 	padding-left:10px;
@@ -268,10 +282,11 @@ div.dialog_box span.ui-btn-text{
 
 span#totalNoOfResult{
 	color: #888888;
+	margin-top:1%;
 }
 ul#thelist li#searchHeadingList{
-	padding-left:2px;
-	background-color:#ffffff;
+	
+	background-color:#EEEEEE;height:70px;
 }
 
 ul#thelist a:active {
@@ -299,11 +314,33 @@ div#searchResultHeadingButton{
 	width:30%;
 }
 
-div#bottomSearchJobDiv{
-	width:100%;margin:0;padding:0;
+div#bottomSearchJobDiv a{
+	width:97%;margin:0 2%;padding:0;
 }
 
 div.listview-buttons{
 	width:100%;
 }
 
+div#searchStringDiv{
+	 float:left;width:60%;
+}
+
+div#seachHeadingBtn{
+	float:right;width:30%;margin:0 2% 0 2%;
+}
+
+ul#thelist li#noResultFoundList{
+	font-size:18px;text-align:center;color:#426685;padding:0;margin-top:20%;
+}
+
+ul#thelist li div#searchAgainBtn{
+	width:52%;padding:0;margin:0 20%;
+}
+
+div#recentSearchDiv{
+	 display:none;margin-top:5%;
+}
+ul#searchList{
+	text-align:center;margin-top:15%;
+}
