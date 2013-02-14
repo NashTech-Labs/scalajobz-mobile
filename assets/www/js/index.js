@@ -2,9 +2,9 @@ var pageNumber=1, totalNoOfPage,value='',time='',id='';
 var availableTags= [];
 var availableEmails= [];
  
-var myScroll,jobDetailScroll,searchPageScroll;
+var jobListScroll,jobDetailScroll,searchPageScroll;
 function loaded() {
-	myScroll = new iScroll('searchHeadingResult',{ hScroll: false, hideScrollbar:false, desktopCompatibility:true});
+	jobListScroll = new iScroll('searchHeadingResult',{ hScroll: false, hideScrollbar:false, desktopCompatibility:true});
 	jobDetailScroll=new iScroll('jobDetails',{ hScroll: false, hideScrollbar:false, bounce : false, momentum:false, 			desktopCompatibility:true});
 	searchPageScroll = new iScroll('searchDiv', {
         	useTransform: false,
@@ -33,11 +33,13 @@ $(document).ready(function() {
 		  $.support.touchOverflow = true;
 	    	  $.mobile.touchOverflowEnabled = true;
 	});
+var topPositionOfSearchDiv= $("#imageLogoDiv").height();
+	$("#searchDiv").css('top', topPositionOfSearchDiv+5+'px');
 	
 	document.addEventListener("deviceready", onDeviceReady, true);
-		
+		showLoadingImage();
 	   $(window).bind( 'orientationchange', function(event){
-		$("#loadingImageDiv").css("display", "block");
+		
 		if(event.orientation){
 	      		if(event.orientation == 'portrait'){	
 				refreshScroll();
@@ -47,12 +49,12 @@ $(document).ready(function() {
 				refreshScroll();
 	      		}
 		}
-	   	 $("#loadingImageDiv").css("display", "none");
+	   	hideLoadingImage();
 	    });
 	
 	    $(document).delegate('#listView','pageshow',function(e) {
 			refreshScroll();
-			var topPositionOfSearchResultDiv= $("#scalaJobHeader").height();
+			var topPositionOfSearchResultDiv= $(".scalaJobHeader").height();
 			$("#searchHeadingResult").css('top', topPositionOfSearchResultDiv+'px');
 			$("#jobDetailsContent").css('top', topPositionOfSearchResultDiv+'px');
 	    });
@@ -112,14 +114,14 @@ $(document).ready(function() {
 
 			  $(this).css("color", "#426685");
 			  id=$(this).find('input').attr('value');
-			  $("#loadingImageDiv").css("display", "block");
+			  showLoadingImage();
 			  $.mobile.changePage( "#jobDetailsContainer");
 			  HideDialog();
 			  $.getJSON("http://www.scalajobz.com/getJobDetail/"+id,function(data) {
 					var applyContactString="" ;
 					var skills="";
 					$('#jobDescription > *').remove();
-					$("#loadingImageDiv").css("display", "none");
+					hideLoadingImage();
 					if(data.contactType=='url'){
 						applyContactString="Click to apply:<br/><a id='jobDetailLink'  class='ui-link' rel='external' target='_blank' data-ajax='false'><span class='jobValues' id='"+data.contactAddress+"' onclick='applyToJobLink(this.id);'>"+data.tinyUrl+"</span></a><br/><hr/>";
 
@@ -159,9 +161,6 @@ $(document).ready(function() {
 var onDeviceReady = function() {
         window.addEventListener("batterylow", onBatteryLow, false);
         
-	var topPositionOfSearchDiv= $("#imageLogoDiv").height();
-	$("#searchDiv").css('top', topPositionOfSearchDiv+5+'px');
-	
         $('#searchbtn').live("tap", function(event){
 		if($("#searchTextBox").attr('value') != ''){
 			checkConnection();
@@ -210,12 +209,12 @@ function calculateDatePostedTime(datePosted){
 function addMoreJobsToList(){
 	pageNumber++;
 	if( totalNoOfPage >= pageNumber){
-	  $("#loadingImageDiv").css("display", "block");
+	  showLoadingImage();
 	  $.getJSON(" http://www.scalajobz.com/getJobsForACriteria/"+value+"?page="+pageNumber+"&jobsPerPage=25",function(data) {
 		
 		for(i in data.results){
 					var time= calculateDatePostedTime(data.results[i].datePosted);
-					$("#loadingImageDiv").css("display", "none");
+					hideLoadingImage();
 					$('ul#thelist').append("<a class='listItemLink'><li><input type='hidden' class='hiddenId' value='"+data.results[i].jobId+"'/><b>"+data.results[i].position+"</b><br/>"+data.results[i].company+" <br/>"+data.results[i].location+"<br/><span id='datePosted'>"+time+"</span></li></a><hr/>");
 				}
 				refreshScroll();
@@ -237,7 +236,7 @@ function showListJobsPage(){
 		}
 		pageNumber=1;
 		$.mobile.changePage( "#listView",null,true,true);
-		$("#loadingImageDiv").css("display", "block");
+		showLoadingImage();
 		$("#listContent").css("display", "none");
 		$('ul#thelist > *').remove();
 		$.getJSON(" http://www.scalajobz.com/getJobsForACriteria/"+value+"?page="+pageNumber+"&jobsPerPage=25",function(data) {
@@ -268,10 +267,10 @@ function showListJobsPage(){
 			$('#searchAgainBtn').children('a').buttonMarkup();
 			$('#searchButtonOnList').buttonMarkup();
 			refreshScroll();
-			myScroll.scrollTo(0,0,100);
+			jobListScroll.scrollTo(0,0,100);
 			setTimeout(function()
 			{
-				$("#loadingImageDiv").css("display", "none");
+				hideLoadingImage();
 			},500);
 		});
 }
@@ -314,7 +313,7 @@ function recentSearchClick(searchKey){
 
 function refreshScroll(){
 	searchPageScroll.refresh();
-        myScroll.refresh();
+        jobListScroll.refresh();
 	jobDetailScroll.refresh();
 }
 
@@ -326,4 +325,12 @@ function checkConnection(){
 	else{
         	showListJobsPage();
 	}
+}
+
+function showLoadingImage(){
+	$("#loadingImageDiv").css("display", "block");
+}
+
+function hideLoadingImage(){
+	$("#loadingImageDiv").css("display", "none");
 }
