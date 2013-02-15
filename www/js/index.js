@@ -1,4 +1,4 @@
-var pageNumber=1, totalNoOfPage,value='',time='',id='';
+var pageNumber=1, totalNoOfPage,value='',time='',job_Id='';
 var availableTags= [];
 var availableEmails= [];
  
@@ -33,11 +33,9 @@ $(document).ready(function() {
 		  $.support.touchOverflow = true;
 	    	  $.mobile.touchOverflowEnabled = true;
 	});
-	var topPositionOfSearchDiv= $("#imageLogoDiv").height();
-	$("#searchDiv").css('top', topPositionOfSearchDiv+5+'px');
 	
 	document.addEventListener("deviceready", onDeviceReady, true);
-	   showLoadingImage();
+		showLoadingImage();
 	   $(window).bind( 'orientationchange', function(event){
 		
 		if(event.orientation){
@@ -73,30 +71,32 @@ $(document).ready(function() {
 		}
 
 		for(var i=availableTags.length-1;i>=0;i--){
-				$('#suggestions').append('<li onclick="recentSearchClick(this.innerHTML);"><span id="recentSearchString">'+availableTags[i]+'</span><img src="images/arrow.png" align="right" id="arrowImage"/></li><hr/>')
+				$('#suggestions').append('<li onclick="recentSearchClick(this.innerHTML);"><span class="recentSearchString">'+availableTags[i]+'</span><img src="images/arrow.png" align="right" class="arrowImage"/></li><hr/>')
 		}
 		$('#suggestions').append('<li><br/></li>');
 		refreshScroll();
 		
 	  });
 
-	  $('#emailTextBox').on('input',function(e){
+	$('#emailTextBox').on('input',function(e){
 		$('ul#emailSuggestions').show();
-	  });
+	});
 	
-   	  $("#btnClose").click(function (e){
+   	$("#btnClose").click(function (e)
+            {
                 HideDialog();
                 e.preventDefault();
-          });
+            });
 
-          $("#btnSubmit").click(function (e){
+        $("#btnSubmit").click(function (e)
+            {
                 var email = $("#emailTextBox").val();
                 var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
                 if (pattern.test(email)){
 			if( jQuery.inArray(email, availableEmails) < 0 )
 				availableEmails.push(email);
 	               	HideDialog();
-                	$.getJSON("http://www.scalajobz.com/sendJobDetailMail?emailId="+email+"&jobId="+id,function(data) {
+                	$.getJSON("http://www.scalajobz.com/sendJobDetailMail?emailId="+email+"&jobId="+job_Id,function(data) {
                 		alert(data.message);
                 	});
                 	
@@ -105,16 +105,17 @@ $(document).ready(function() {
                 	alert('Enter correct email address');
                 }
 		e.preventDefault();
-           });
+       });
 	
-	   $(document).on("tap", "#searchHeadingResult ul a li",function(e){ 
+
+	$(document).on("tap", "#searchHeadingResult ul a li",function(e){ 
 
 			  $(this).css("color", "#426685");
-			  id=$(this).find('input').attr('value');
+			  job_Id=$(this).find('input').attr('value');
 			  showLoadingImage();
 			  $.mobile.changePage( "#jobDetailsContainer");
 			  HideDialog();
-			  $.getJSON("http://www.scalajobz.com/getJobDetail/"+id,function(data) {
+			  $.getJSON("http://www.scalajobz.com/getJobDetail/"+job_Id,function(data) {
 					var applyContactString="" ;
 					var skills="";
 					$('#jobDescription > *').remove();
@@ -157,7 +158,9 @@ $(document).ready(function() {
 
 var onDeviceReady = function() {
         window.addEventListener("batterylow", onBatteryLow, false);
-        
+        var topPositionOfSearchDiv= $("#imageLogoDiv").height();
+	$("#searchDiv").css('top', topPositionOfSearchDiv+5+'px');
+	
         $('#searchbtn').live("tap", function(event){
 		if($("#searchTextBox").attr('value') != ''){
 			checkConnection();
@@ -166,7 +169,7 @@ var onDeviceReady = function() {
 			alert('Enter search string');
 		}
 	});
-};
+    };
     
 function onBatteryLow(info) {
         alert("Battery Level Low " + info.level + "%"); 
@@ -252,7 +255,7 @@ function showListJobsPage(){
 
 				for(i in data.results){
 					var time= calculateDatePostedTime(data.results[i].datePosted);
-					$('ul#thelist').append("<a class='listItemLink'><li><input type='hidden' class='hiddenId' value='"+data.results[i].jobId+"'/><b>"+data.results[i].position+"</b><br/> "+data.results[i].company+" <img src='images/arrow.png' align='right' id='arrowImage'/><br/>"+data.results[i].location+"<br/><span id='datePosted'>"+time+"</span></li></a><hr/>");
+					$('ul#thelist').append("<a class='listItemLink'><li><input type='hidden' class='hiddenId' value='"+data.results[i].jobId+"'/><b>"+data.results[i].position+"</b><br/> "+data.results[i].company+" <img src='images/arrow.png' align='right' class='arrowImage'/><br/>"+data.results[i].location+"<br/><span id='datePosted'>"+time+"</span></li></a><hr/>");
 			
 				}
 			}
@@ -264,7 +267,6 @@ function showListJobsPage(){
 			$('#searchAgainBtn').children('a').buttonMarkup();
 			$('#searchButtonOnList').buttonMarkup();
 			refreshScroll();
-			jobListScroll.scrollTo(0,0,100);
 			setTimeout(function()
 			{
 				hideLoadingImage();
@@ -291,18 +293,17 @@ function ShowDialog()
 	$("#dialog").fadeIn(100);
         }
 
-function HideDialog()
+ function HideDialog()
         {
             $("#dialog").fadeOut(100);
 	    $("#jobDetailsContent").fadeTo("slow", 1);
         } 
-        
-function applyToJobLink(urlAddress){
+ function applyToJobLink(urlAddress){
 	window.open(urlAddress, "_blank");
 }
 
 function recentSearchClick(searchKey){
-	$('#recentSearchString').css('color','#FFA500');
+	//$('.recentSearchString').css('color','#FFA500');
 	searchKey=searchKey.split('">')[1];
 	searchKey=searchKey.split('<')[0];
 	$("#searchTextBox").val(searchKey);
