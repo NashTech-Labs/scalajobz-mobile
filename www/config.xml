@@ -11,7 +11,7 @@ Find jobs from your Android phone with ScalaJobz.com, the most comprehensive sea
     </description>
 
     <author href="www.knoldus.com" email="info@knoldus.com">
-        PhoneGap Team
+        Knoldus Software
     </author>
 
     <feature name="http://api.phonegap.com/1.0/device" />
