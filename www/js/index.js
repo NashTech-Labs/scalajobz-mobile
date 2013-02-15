@@ -5,7 +5,7 @@ var availableEmails= [];
 var jobListScroll,jobDetailScroll,searchPageScroll;
 function loaded() {
 	jobListScroll = new iScroll('searchHeadingResult',{ hScroll: false, hideScrollbar:false, desktopCompatibility:true});
-	jobDetailScroll=new iScroll('jobDetails',{ hScroll: false, hideScrollbar:false, bounce : false, momentum:false, 			desktopCompatibility:true});
+	jobDetailScroll=new iScroll('jobDetails',{ hScroll: false, hideScrollbar:false, bounce : false, momentum:false, desktopCompatibility:true});
 	searchPageScroll = new iScroll('searchDiv', {
         	useTransform: false,
 		bounce : false, 
