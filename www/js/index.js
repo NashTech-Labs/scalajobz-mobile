@@ -33,11 +33,11 @@ $(document).ready(function() {
 		  $.support.touchOverflow = true;
 	    	  $.mobile.touchOverflowEnabled = true;
 	});
-var topPositionOfSearchDiv= $("#imageLogoDiv").height();
+	var topPositionOfSearchDiv= $("#imageLogoDiv").height();
 	$("#searchDiv").css('top', topPositionOfSearchDiv+5+'px');
 	
 	document.addEventListener("deviceready", onDeviceReady, true);
-		showLoadingImage();
+	   showLoadingImage();
 	   $(window).bind( 'orientationchange', function(event){
 		
 		if(event.orientation){
@@ -80,18 +80,16 @@ var topPositionOfSearchDiv= $("#imageLogoDiv").height();
 		
 	  });
 
-	$('#emailTextBox').on('input',function(e){
+	  $('#emailTextBox').on('input',function(e){
 		$('ul#emailSuggestions').show();
-	});
+	  });
 	
-   	$("#btnClose").click(function (e)
-            {
+   	  $("#btnClose").click(function (e){
                 HideDialog();
                 e.preventDefault();
-            });
+          });
 
-        $("#btnSubmit").click(function (e)
-            {
+          $("#btnSubmit").click(function (e){
                 var email = $("#emailTextBox").val();
                 var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
                 if (pattern.test(email)){
@@ -107,10 +105,9 @@ var topPositionOfSearchDiv= $("#imageLogoDiv").height();
                 	alert('Enter correct email address');
                 }
 		e.preventDefault();
-       });
+           });
 	
-
-	$(document).on("tap", "#searchHeadingResult ul a li",function(e){ 
+	   $(document).on("tap", "#searchHeadingResult ul a li",function(e){ 
 
 			  $(this).css("color", "#426685");
 			  id=$(this).find('input').attr('value');
@@ -169,7 +166,7 @@ var onDeviceReady = function() {
 			alert('Enter search string');
 		}
 	});
-    };
+};
     
 function onBatteryLow(info) {
         alert("Battery Level Low " + info.level + "%"); 
@@ -294,12 +291,13 @@ function ShowDialog()
 	$("#dialog").fadeIn(100);
         }
 
- function HideDialog()
+function HideDialog()
         {
             $("#dialog").fadeOut(100);
 	    $("#jobDetailsContent").fadeTo("slow", 1);
         } 
- function applyToJobLink(urlAddress){
+        
+function applyToJobLink(urlAddress){
 	window.open(urlAddress, "_blank");
 }
 
