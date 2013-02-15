@@ -1,4 +1,4 @@
-ScalaJobz Phonegap Application
+#ScalaJobz Phonegap Application
 
 A ScalaJobz-mobile application built with PhoneGap.
 Scalajobz Aggregate from various Job Portals like Indeed, Simply Hired ,Career Builder and so on to get the collection of relevant Scala jobs.
