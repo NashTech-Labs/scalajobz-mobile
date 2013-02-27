@@ -334,11 +334,11 @@ function hideLoadingImage(){
 
 function addBackButtonToiOSApp(){
         $('div#backBtnForiOS').remove();
-        $('#jobDetailsContainer .scalaJobHeader').append("<div id='backBtnForiOS'><img id='backArrowImage' src='images/back.png' onclick='goBack();'/></div>");
+        $('#jobDetailsContainer .scalaJobHeader').append("<div id='backBtnForiOS'><img id='backArrowImage' src='images/enable.png' onclick='goBack();'/></div>");
 }
 
 function goBack() {
-        $('img#backArrowImage').attr('src','images/enable.png');
+        $('img#backArrowImage').attr('src','images/back.png');
         history.back();
         return false;
     }
