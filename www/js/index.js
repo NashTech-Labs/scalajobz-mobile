@@ -69,7 +69,7 @@ var app = {
 	},
 	
 	recentSearchClick :function (searchKey){
-		$('#recentSearchString').css('color','#FFA500');
+	//	$('#recentSearchString').css('color','#FFA500');
 		searchKey=searchKey.split('">')[1];
 		searchKey=searchKey.split('<')[0];
 		$("#searchTextBox").val(searchKey);
