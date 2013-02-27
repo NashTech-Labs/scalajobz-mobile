@@ -254,7 +254,7 @@ function showAutoCompleteBox(){
 
 function emailJob(){
 	var email = $("#emailTextBox").val();
-	var jobId= $("#hiddenId").val();alert(jobId);
+	var jobId= $("#hiddenId").val();
                 var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
                 if (pattern.test(email)){
 			if( jQuery.inArray(email, availableEmails) < 0 )
