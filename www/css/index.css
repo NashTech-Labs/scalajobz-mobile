@@ -289,10 +289,6 @@ ul#thelist li#searchHeadingList{
 	background-color:#EEEEEE;height:70px;
 }
 
-ul#thelist a:active {
-    color: #1122CC;
-}
-
 div.headerImageTitle{
 	float:left;
 	width:50%;
@@ -347,5 +343,5 @@ ul#searchList{
 
 div#backBtnForiOS{
 	float:right;width:12%;
-	margin-top:6%;
+	margin-top:0;
 }
