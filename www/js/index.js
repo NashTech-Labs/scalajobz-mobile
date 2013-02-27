@@ -20,11 +20,7 @@ var app = {
     },
     deviceready: function() {
          var topPositionOfSearchDiv= $("#imageLogoDiv").height();
-	 $("#searchDiv").css('top', topPositionOfSearchDiv+5+'px');
-	 var devicePlatform= device.platform;
-	 if(devicePlatform == 'iOS')
-		addBackButtonToiOSApp();
-
+         $("#searchDiv").css('top', topPositionOfSearchDiv+5+'px');
     },
 	onBatteryLow: function(info) {
         	alert("Battery Level Low " + info.level + "%"); 
@@ -73,7 +69,7 @@ var app = {
 	},
 	
 	recentSearchClick :function (searchKey){
-		//$('#recentSearchString').css('color','#FFA500');
+		$('#recentSearchString').css('color','#FFA500');
 		searchKey=searchKey.split('">')[1];
 		searchKey=searchKey.split('<')[0];
 		$("#searchTextBox").val(searchKey);
@@ -115,6 +111,8 @@ $(document).ready(function() {
 		$(this).css("color", "#426685");
 		id=$(this).find('input').attr('value');
 		showLoadingImage();
+        if(device.platform == 'iOS')
+                addBackButtonToiOSApp();
 		$.mobile.changePage( "#jobDetailsContainer");
 		HideDialog();
 		addJobDetailsToPage(id);
@@ -200,7 +198,7 @@ function showListJobsPage(value){
 				}
 		
 				totalNoOfPage= Math.ceil(data.responseDescription.totalResults / 25);
-				$('ul#thelist').append("<li id='searchHeadingList' style='background-color:#EEEEEE;'><br/><div id='searchHeadingStringDiv'><div id='searchStringDiv'><span id=searchString>"+searchValue+"</span><span id='totalNoOfResult'><h3>"+data.responseDescription.totalResults+" "+result+ "</h3></span></div><div id='seachHeadingBtn' align='right'><a href='#indexPage' data-role='button' id='searchButtonOnList' data-inline='true'>Search</a></div></div></li><br/>");
+				$('ul#thelist').append("<li id='searchHeadingList' style='background-color:#EEEEEE;'><div id='searchHeadingStringDiv'><div id='searchStringDiv'><span id=searchString>"+searchValue+"</span><span id='totalNoOfResult'><h3>"+data.responseDescription.totalResults+" "+result+ "</h3></span></div><div id='seachHeadingBtn' align='right'><a href='#indexPage' data-role='button' id='searchButtonOnList' data-inline='true'>Search</a></div></div></li><br/>");
 
 				addJobsToList(data.results);
 				
@@ -335,11 +333,12 @@ function hideLoadingImage(){
 }
 
 function addBackButtonToiOSApp(){
-	$('#jobDetailsContainer .scalaJobHeader').append("<div id='backBtnForiOS'><img src='images/back.png' onclick='goBack();'/></div>");
+        $('div#backBtnForiOS').remove();
+        $('#jobDetailsContainer .scalaJobHeader').append("<div id='backBtnForiOS'><img id='backArrowImage' src='images/back.png' onclick='goBack();'/></div>");
 }
 
 function goBack() {
-	history.back();
-	return false;
-}
-
+        $('img#backArrowImage').attr('src','images/enable.png');
+        history.back();
+        return false;
+    }
